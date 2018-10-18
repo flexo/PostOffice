@@ -2,6 +2,7 @@ import sys
 import time
 import os
 import socket
+import getpass
 import gnupg
 from daemonize import Daemonize
 import cups
@@ -16,7 +17,7 @@ except RuntimeError as e:
     CUPS_CONNECTION = None
 
 
-PASSPHRASE = sys.stdin.readline()
+PASSPHRASE = None
 
 def check_rate_limit(connection_ip):
     '''Checks previous connections and rejects this one if connected too over
@@ -145,6 +146,7 @@ def await_connections():
 if __name__ == "__main__":
 
     pid = "/tmp/postoffice.pid"
+    PASSPHRASE = getpass.getpass('Password for GPG: ')
 
     if "-d" in sys.argv:
         print("Daemonizing....")
